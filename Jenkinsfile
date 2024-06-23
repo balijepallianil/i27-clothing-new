@@ -63,14 +63,14 @@ def imageBuildFrontEnd() {
     echo "********Docker Push******"
     sh "docker push ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
     }
+}
 def k8sdeploy(){
-        return{
-            def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
-            echo "${docker_image}"
-            sh "ls -l"
-            //echo "Executing K8S Deploy Method"
-            //sh "sed -i "s|DIT|${docker_image}|g" ./.cicd/$fileName"
-            //kubectl apply -f ./.cicd/$fileName -n $namespace
-        }
+    return{
+        def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+        echo "${docker_image}"
+        sh "ls -l"
+        //echo "Executing K8S Deploy Method"
+        //sh "sed -i "s|DIT|${docker_image}|g" ./.cicd/$fileName"
+        //kubectl apply -f ./.cicd/$fileName -n $namespace
     }
 }
