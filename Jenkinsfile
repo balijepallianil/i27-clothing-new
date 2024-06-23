@@ -35,8 +35,6 @@ pipeline {
                     }
             }
         }
-    }
-    stages {
         stage ('Deploy to Dev') {
             when {
                 anyOf {
@@ -53,6 +51,8 @@ pipeline {
         }
     }
 }
+       
+
 
 def imageBuildFrontEnd() {
     return{
