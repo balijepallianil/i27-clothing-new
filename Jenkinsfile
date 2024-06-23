@@ -7,6 +7,10 @@ pipeline {
             choices: 'no\nyes',
             description: "Docker Build and push to registry"
         )
+        choice (name: 'deployToDev',
+                choices: 'no\nyes',
+                description: "Deploy app in DEV"
+        )
     }
     tools{
             jdk 'JDK-17'
@@ -32,6 +36,22 @@ pipeline {
             }
         }
     }
+    stages {
+        stage ('Deploy to Dev') {
+            when {
+                anyOf {
+                    expression {
+                        params.deployToDev == 'yes'
+                    }
+                }
+            } 
+            steps {
+                script  {
+                    k8sdeploy().call()
+                    }
+            }
+        }
+    }
 }
 
 def imageBuildFrontEnd() {
@@ -42,5 +62,15 @@ def imageBuildFrontEnd() {
     sh "docker login -u ${DOCKER_CREDS_USR} -p ${DOCKER_CREDS_PSW}"
     echo "********Docker Push******"
     sh "docker push ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+    }
+def k8sdeploy(){
+        return{
+            def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+            echo "${docker_image}"
+            sh "ls -l"
+            //echo "Executing K8S Deploy Method"
+            //sh "sed -i "s|DIT|${docker_image}|g" ./.cicd/$fileName"
+            //kubectl apply -f ./.cicd/$fileName -n $namespace
+        }
     }
 }
