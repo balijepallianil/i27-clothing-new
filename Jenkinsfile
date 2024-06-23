@@ -71,9 +71,11 @@ def k8sdeploy(){
     return{
         def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
         echo "${docker_image}"
-        sh "ls -l"
+        sh """
+        ls -l
         echo "Executing K8S Deploy Method"
-        sh "sed -i s|DIT|${docker_image}|g ${env.FILE_PATH}"
-        sh "kubectl apply -f ${env.FILE_PATH} -n ${env.DEV_NAMESPACE}"
+        sed -i "s|DIT|${docker_image}|g" ${env.FILE_PATH}
+        kubectl apply -f ${env.FILE_PATH} -n ${env.DEV_NAMESPACE}
+        """
     }
 }
