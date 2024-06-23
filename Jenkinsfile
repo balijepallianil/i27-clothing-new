@@ -48,6 +48,7 @@ pipeline {
             } 
             steps {
                 script  {
+                    imageValidation().call()
                     k8sdeploy().call()
                     }
             }
@@ -77,5 +78,18 @@ def k8sdeploy(){
         sed -i "s|DIT|${docker_image}|g" ${env.FILE_PATH}
         kubectl apply -f ${env.FILE_PATH} -n ${env.DEV_NAMESPACE}
         """
+    }
+}
+
+def imageValidation() {
+    return {
+        println ("pulling he docker Image")
+        try {
+            sh "docker pull ${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
+        } 
+        catch (Exception e) {
+            println("OOPS!!!!!, docker image with this tag doesnot exists, So creating the image")
+            imageBuildFrontEnd().call()
+        }
     }
 }
