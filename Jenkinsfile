@@ -73,7 +73,7 @@ def k8sdeploy(){
         echo "${docker_image}"
         sh "ls -l"
         echo "Executing K8S Deploy Method"
-        sh "sed -i s|DIT|"${docker_image}"|g ${env.FILE_PATH}"
+        sh "sed -i s|DIT|${docker_image}|g ${env.FILE_PATH}"
         sh "kubectl apply -f ${env.FILE_PATH} -n ${env.DEV_NAMESPACE}"
     }
 }
