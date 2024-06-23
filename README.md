@@ -14,6 +14,7 @@ In your terminal after you clone your project down, remember to run either `yarn
 
 ## API URL Configuration
 If you look into project structure there is a file under src `config.js`. Here is the link to that file [config.js](src\config.js). This file contains the variables that define the service(learner-user-service and learner-product-service) URL and API URLs. If there is any change in host URL or service URL it can be updated within that file.
+Hi
 
 ## Run Commands for different environment
 - local : "cross-env REACT_APP_ENV=local react-scripts start",
