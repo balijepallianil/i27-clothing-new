@@ -19,6 +19,8 @@ pipeline {
         APPLICATION_NAME = "clothing"
         DOCKER_HUB = "docker.io/i27anilb3"
         DOCKER_CREDS = credentials('docker_creds')
+        K8S_DEV_FILE = "k8s-dev.yaml"
+        DEV_NAMESPACE = "i27-dev-ns"
     }
     stages {
         stage ('Docker Build and push') {
@@ -69,8 +71,8 @@ def k8sdeploy(){
         def docker_image = "${env.DOCKER_HUB}/${env.APPLICATION_NAME}:${GIT_COMMIT}"
         echo "${docker_image}"
         sh "ls -l"
-        //echo "Executing K8S Deploy Method"
-        //sh "sed -i "s|DIT|${docker_image}|g" ./.cicd/$fileName"
-        //kubectl apply -f ./.cicd/$fileName -n $namespace
+        echo "Executing K8S Deploy Method"
+        sh "sed -i s|DIT|${docker_image}|g ${env.K8S_DEV_FILE}"
+        sh "kubectl apply -f ${env.K8S_DEV_FILE} -n ${env.DEV_NAMESPACE}"
     }
 }
