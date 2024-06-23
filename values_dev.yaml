@@ -1,0 +1,9 @@
+labelname: i27-clothing
+deployname: i27-clothing-dev
+namespace: i27-dev-ns
+replicas:
+  default: 1
+image:
+  name: i27anilb3/clothing
+  tag: ${GIT_COMMIT}
+targetPort: 3000
